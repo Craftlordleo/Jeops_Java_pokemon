@@ -1,0 +1,102 @@
+package aplicacao;
+
+public ruleBase Agente {
+
+    rule Andar{
+        declarations
+            Pokemon poke;
+            Personagem p;
+        conditions
+            p.nextTile();
+            // pode ir pra frente?
+            // já explorou o tile
+        actions
+            System.out.println("Andou");
+            p.andar();
+            modified(p);
+    }
+
+    rule AndarAgua{
+        declarations
+            Pokemon poke;
+            Personagem p;
+            TileMap tm;
+            Tile tile;
+        conditions
+            p.nextTile();
+            p.isAgua();
+            tm.getTerrenoAt(p.getPosX(), p.getPosY()) == Tile.AGUA;
+            // pode ir pra frente?
+            // já explorou o tile
+        actions
+            System.out.println("Andou na agua");
+            p.andar();
+            modified(p);
+    }
+
+    rule PegaPokebola{
+        declarations
+            Pokemon poke;
+            Personagem p;
+        conditions
+            p.getPokebolasTotal() < 151;
+            // precisa estar na loja
+        actions
+            System.out.println("Pegou pokebolas");
+            p.pegarPokebolas();
+            modified(p);
+    }
+
+    rule PegaPokemon{
+        declarations
+            Pokemon poke;
+            Personagem p;
+        conditions
+            p.getPokebolas() > 0;
+            // precisa ter pokemon no Tile atual
+        actions
+            System.out.println("Pegou pokemons");
+            p.pegarPokemon(new Pokemon()); // precisa pasar um Pokemon por parametro
+            modified(p);
+    }
+
+    rule RecuperaPokemons{
+        declarations
+            Pokemon poke;
+            Personagem p;
+        conditions
+            p.getPokemons() > 0;
+            p.getEstadoPokemons()==Personagem.FERIDOS;
+            // precisa estar no Centro pokemon
+        actions
+            System.out.println("Recuperou pokemons");
+            p.recuperarPokemon();
+            modified(p);
+    }
+
+    rule VenceBatalha{
+        declarations
+            Pokemon poke;
+            Personagem p;
+        conditions
+            p.getEstadoPokemons()==Personagem.CURADOS;
+            // precisa ter Treinador no Tile atual
+        actions
+            System.out.println("Venceu a batalha");
+            p.vencerBatalha();
+            modified(p);
+    }
+
+    rule PerdeBatalha{
+        declarations
+            Pokemon poke;
+            Personagem p;
+        conditions
+            p.getEstadoPokemons()==Personagem.FERIDOS;
+            // precisa ter Treinador no Tile atual
+        actions
+            System.out.println("Perdeu a batalha");
+            p.perderBatalha();
+            modified(p);
+    }
+}
