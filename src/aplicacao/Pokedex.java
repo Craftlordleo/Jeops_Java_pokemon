@@ -3,21 +3,22 @@ package aplicacao;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Pokedex {
-    private ArrayList<Pokemon> lista_pokemons;
+    private HashMap<Integer, Pokemon> lista_pokemons;
 
     public Pokedex() {
-	lista_pokemons = new ArrayList<Pokemon>();
-	lista_pokemons.add(new Pokemon());
+	lista_pokemons = new HashMap<Integer, Pokemon>();
+	this.lerArquivoNomes();
+	this.lerArquivoTipos();
     }
 
-    public ArrayList<Pokemon> getListaPokemons() {
+    public HashMap<Integer, Pokemon> getListaPokemons() {
 	return lista_pokemons;
     }
 
-    public void setListaPokemons(ArrayList<Pokemon> pokemons) {
+    public void setListaPokemons(HashMap<Integer, Pokemon> pokemons) {
 	this.lista_pokemons = pokemons;
     }
 
@@ -26,13 +27,12 @@ public class Pokedex {
     }
 
     public void addPokemon(Pokemon pokemon) {
-	if (this.getPokemon(pokemon.getId()) == null) {
-	    this.lista_pokemons.add(pokemon.getId(), pokemon);
-	}
-    }
-
-    public void updatePokemon(Pokemon pokemon) {
-	this.lista_pokemons.add(pokemon.getId(), pokemon);
+	// if(this.lista_pokemons.containsKey(pokemon.getId())){
+	// this.lista_pokemons.
+	// }else{
+	// this.lista_pokemons.put(pokemon.getId(), pokemon);
+	// }
+	this.lista_pokemons.put(pokemon.getId(), pokemon);
     }
 
     public void lerArquivoNomes() {
@@ -99,9 +99,9 @@ public class Pokedex {
 
     public static void main(String[] args) {
 	Pokedex pokedex = new Pokedex();
-	pokedex.lerArquivoNomes();
-	pokedex.lerArquivoTipos();
-
+	System.out.println(pokedex.getPokemon(6));
+	System.out.println(pokedex.getPokemon(1));
+	System.out.println(pokedex.getPokemon(151));
     }
 
 }

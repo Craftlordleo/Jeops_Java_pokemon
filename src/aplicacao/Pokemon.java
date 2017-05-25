@@ -82,17 +82,133 @@ public class Pokemon {
 	this.image = image;
     }
 
+    public String getTipo1String() {
+	String string = "";
+	switch (this.tipo1) {
+	case VAZIO:
+	    string = "Vazio";
+	    break;
+	case NORMAL:
+	    string = "Normal";
+	    break;
+	case FIGHTING:
+	    string = "Fighting";
+	    break;
+	case FLYING:
+	    string = "Flying";
+	    break;
+	case FIRE:
+	    string = "Fire";
+	    break;
+	case BUG:
+	    string = "Bug";
+	    break;
+	case DRAGON:
+	    string = "Dragon";
+	    break;
+	case ELECTRIC:
+	    string = "Electric";
+	    break;
+	case GHOST:
+	    string = "Ghost";
+	    break;
+	case GRASS:
+	    string = "Grass";
+	    break;
+	case GROUND:
+	    string = "Ground";
+	    break;
+	case ICE:
+	    string = "Ice";
+	    break;
+	case POISON:
+	    string = "Poison";
+	    break;
+	case PSYCHIC:
+	    string = "Psychic";
+	    break;
+	case WATER:
+	    string = "Water";
+	    break;
+	case STEEL:
+	    string = "Steel";
+	    break;
+	case ROCK:
+	    string = "Rock";
+	    break;
+	}
+	return string;
+    }
+
+    public String getTipo2String() {
+	String string = "";
+	switch (this.tipo2) {
+	case VAZIO:
+	    string = "Vazio";
+	    break;
+	case NORMAL:
+	    string = "Normal";
+	    break;
+	case FIGHTING:
+	    string = "Fighting";
+	    break;
+	case FLYING:
+	    string = "Flying";
+	    break;
+	case FIRE:
+	    string = "Fire";
+	    break;
+	case BUG:
+	    string = "Bug";
+	    break;
+	case DRAGON:
+	    string = "Dragon";
+	    break;
+	case ELECTRIC:
+	    string = "Electric";
+	    break;
+	case GHOST:
+	    string = "Ghost";
+	    break;
+	case GRASS:
+	    string = "Grass";
+	    break;
+	case GROUND:
+	    string = "Ground";
+	    break;
+	case ICE:
+	    string = "Ice";
+	    break;
+	case POISON:
+	    string = "Poison";
+	    break;
+	case PSYCHIC:
+	    string = "Psychic";
+	    break;
+	case WATER:
+	    string = "Water";
+	    break;
+	case STEEL:
+	    string = "Steel";
+	    break;
+	case ROCK:
+	    string = "Rock";
+	    break;
+	}
+	return string;
+    }
+
     public String toString() {
 	String string = "";
 	string += "Nome: " + this.getNome();
 	string += "\nId: " + this.getId();
-	string += "\nTipo1: " + this.getTipo1();
-	string += "\nTipo2: " + this.getTipo2();
+	string += "\nTipo1: " + this.getTipo1String();
+	string += "\nTipo2: " + this.getTipo2String();
 	string += "\nImagem: " + this.getImage();
 	return string;
     }
 
-//    public static void main(String[] args) {
-//	System.out.println("teste pokemons");
-//    }
+    // public static void main(String[] args) {
+    // System.out.println("teste pokemons");
+    // }
 }

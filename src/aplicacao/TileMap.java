@@ -91,16 +91,46 @@ public class TileMap {
 	}
     }
 
+    public void espalhaThing(int quantidade, int valor) {
+	Random gerador = new Random();
+	Tile tile = null;
+
+	while (quantidade > 0) {
+	    int index = gerador.nextInt(maxX * maxY);
+	    tile = tiles.get(index);
+	    if (tile.getOcupado() == Tile.VAZIO) {
+		tile.setOcupado(valor);
+		quantidade--;
+		tiles.set(index, tile);
+	    }
+	}
+    }
+
     public void espalhaPokemons() {
-	System.out.println("Implementar apos criar pokemons");
+	Random gerador = new Random();
+	Tile tile = null;
+	int pokemons = this.pokemons;
+
+	while (pokemons > 0) {
+	    int index = gerador.nextInt(maxX * maxY);
+	    tile = tiles.get(index);
+	    if (tile.getOcupado() == Tile.VAZIO) {
+		tile.setOcupado(pokemons);
+		pokemons--;
+		tiles.set(index, tile);
+	    }
+	}
     }
 
     // Faltam os pokemons
     public void geraElementos() {
-	this.espalhaCentros();
-	this.espalhaLojas();
-	this.espalhaTreinadores();
-
+	// this.espalhaCentros();
+	// this.espalhaLojas();
+	// this.espalhaTreinadores();
+	this.espalhaThing(this.getCentros(), Tile.CENTRO);
+	this.espalhaThing(this.getLojas(), Tile.LOJA);
+	this.espalhaThing(this.getTreinadores(), Tile.TREINADOR);
+	this.espalhaPokemons();
     }
 
     public Tile getTile(int x, int y) {
@@ -182,11 +212,26 @@ public class TileMap {
 	return string;
     }
 
+    public String getConfiguracao() {
+	String string = "";
+	string += "Treinadores: " + this.getTreinadores();
+	string += "\nCentros: " + this.getCentros();
+	string += "\nLojas: " + this.getLojas();
+	string += "\nPokemons: " + this.getPokemons();
+	string += "\nMaxX: " + this.getMaxX();
+	string += "\nMaxY: " + this.getMaxY();
+	return string;
+    }
+
     public static void main(String[] args) {
 	TileMap map = new TileMap();
 	map.geraTiles();
 	map.geraElementos();
-	System.out.println(map.toString());
-	// System.out.println(map.getTile(25, 20).toString());
+	// System.out.println(map.toString());
+	System.out.println(map.getConfiguracao());
+	System.out.println(map.getTile(25, 20).toString());
+	System.out.println(
+		"============================================================");
+	System.out.println(map.getTile(20, 25).toString());
     }
 }

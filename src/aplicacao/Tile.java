@@ -11,7 +11,8 @@ public class Tile {
     public static final int CENTRO = -1;
     public static final int LOJA = -2;
     public static final int TREINADOR = -3;
-    public static final int POKEMON = 1;// id dos 151??
+    // public static final int POKEMON = 1;// id dos 151??
+    // pokemons vai usar o propio id
 
     private int ocupado = Tile.VAZIO;
     private int terreno = Tile.GRAMA;
@@ -67,6 +68,7 @@ public class Tile {
 
     public String getOcupadoString() {
 	String string = "";
+
 	switch (this.ocupado) {
 	case VAZIO:
 	    string = "Vazio";
@@ -80,9 +82,11 @@ public class Tile {
 	case TREINADOR:
 	    string = "TREINADOR";
 	    break;
-	case POKEMON:
-	    string = "POKEMON";
+	default:
+	    string = "Pokemon - "
+		    + new Pokedex().getPokemon(this.getOcupado()).getNome();
 	    break;
+
 	}
 	return string;
     }
@@ -95,6 +99,7 @@ public class Tile {
 	string += this.getOcupadoString();
 	return string;
     }
+
     public static void main(String[] args) {
 	System.out.println("teste Tile");
     }
