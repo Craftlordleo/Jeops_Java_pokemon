@@ -267,7 +267,7 @@ public class Personagem {
 	this.pontuacao -= 1000;
     }
 
-    @Override
+    
     public String toString() {
 	String string = "";
 
