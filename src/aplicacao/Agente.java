@@ -4,7 +4,7 @@ package aplicacao;
 
     
     /**
-     * Identifiers of rule Andar,,,,,,,
+     * Identifiers of rule Andar ,,,,,,,
      */
     private String[] identifiers_Andar = {
         "poke",
