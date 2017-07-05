@@ -1,5 +1,11 @@
 package aplicacao;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+
+import javax.imageio.ImageIO;
+
 public class Personagem {
     public static final int CURADOS = 0;
     public static final int FERIDOS = 1;
@@ -21,15 +27,20 @@ public class Personagem {
     private boolean agua;
     private boolean lava;
     private boolean caverna;
-    
+
     private TileMap mapa;
 
+    private BufferedImage[] walkingSprites;
+    private Animation animation;
+    private int size; // altura e largura da figura na tela
+
     public Personagem() {
+	this.size = 15;
 	this.pokebolas = 25;
 	this.pokebolasTotal = 25;
 	this.pokemons = 0;
-	this.posX = 25;
-	this.posY = 20;
+	this.posX = 24;
+	this.posY = 19;
 	this.direcao = SUL;
 	this.pontuacao = 0;
 	this.estadoPokemons = FERIDOS;
@@ -38,6 +49,15 @@ public class Personagem {
 	this.lava = false;
 	this.caverna = false;
 	this.mapa = new TileMap();
+	animation = new Animation();
+
+	try {
+	    walkingSprites = new BufferedImage[1];
+	    walkingSprites[0] = ImageIO.read(new File(
+		    "C:/Users/Carlos/Dropbox/Work/PokemonJeopsWeb/recurso/walking.gif"));
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
     }
 
     public Personagem(int pokebolas, int pokemons, int posX, int posY,
@@ -52,6 +72,38 @@ public class Personagem {
 	this.direcao = direcao;
 	this.estadoPokemons = estadoPokemons;
 	this.pontuacao = pontuacao;
+    }
+
+    public TileMap getMapa() {
+	return mapa;
+    }
+
+    public void setMapa(TileMap mapa) {
+	this.mapa = mapa;
+    }
+
+    public BufferedImage[] getWalkingSprites() {
+	return walkingSprites;
+    }
+
+    public void setWalkingSprites(BufferedImage[] walkingSprites) {
+	this.walkingSprites = walkingSprites;
+    }
+
+    public Animation getAnimation() {
+	return animation;
+    }
+
+    public void setAnimation(Animation animation) {
+	this.animation = animation;
+    }
+
+    public int getSize() {
+	return size;
+    }
+
+    public void setSize(int size) {
+	this.size = size;
     }
 
     public int getPokebolas() {
@@ -264,14 +316,32 @@ public class Personagem {
     public void vencerBatalha() {
 	this.pontuacao += 150;
 	this.estadoPokemons = FERIDOS;
-	
+
     }
 
     public void perderBatalha() {
 	this.pontuacao -= 1000;
     }
 
-    
+    public String getDirecaoString() {
+	String string = "";
+	switch (this.direcao) {
+	case Personagem.NORTE:
+	    string = "Norte";
+	    break;
+	case Personagem.SUL:
+	    string = "Sul";
+	    break;
+	case Personagem.LESTE:
+	    string = "Leste";
+	    break;
+	case Personagem.OESTE:
+	    string = "Oeste";
+	    break;
+	}
+	return string;
+    }
+
     public String toString() {
 	String string = "";
 
@@ -281,7 +351,7 @@ public class Personagem {
 	string += "\nPokemons: " + this.getPokemons();
 	string += "\nPos X: " + this.getPosX();
 	string += "\nPos Y: " + this.getPosY();
-	string += "\nDirecao: " + this.getDirecao();
+	string += "\nDirecao: " + this.getDirecaoString();
 	string += "\nEstado Pokemons: " + this.getEstadoPokemons();
 	string += "\nAgua: " + this.isAgua();
 	string += "\nLava: " + this.isLava();
@@ -292,31 +362,74 @@ public class Personagem {
     }
 
     public boolean nextTile() {
-	// TODO Auto-generated method stub
-	return false;
+	int auxX = this.posX;
+	int auxY = this.posY;
+
+	switch (this.getDirecao()) {
+	case Personagem.NORTE:
+	    auxY -= 1;
+	    break;
+	case Personagem.SUL:
+	    auxY += 1;
+	    break;
+	case Personagem.OESTE:
+	    auxX -= 1;
+	    break;
+	case Personagem.LESTE:
+	    auxX += 1;
+	    break;
+	}
+	if (auxY > 41) {
+	    return false;
+	} else if (auxY < 0) {
+	    return false;
+	} else if (auxX > 41) {
+	    return false;
+	} else if (auxX < 0) {
+	    return false;
+	}
+
+	return true;
     }
 
-//    public static void main(String[] args) {
-//	Personagem treinador = new Personagem();
-//	System.out.println(treinador);
-//	treinador.pegarPokebolas();
-//	System.out.println(
-//		"--------------------------------------------------------");
-//	System.out.println(treinador);
-//	Pokemon pokemon = new Pokemon("teste", 1, Pokemon.ELECTRIC,
-//		Pokemon.VAZIO, null);
-//	treinador.pegarPokemon(pokemon);
-//	System.out.println(
-//		"--------------------------------------------------------");
-//	System.out.println(treinador);
-//	treinador.vencerBatalha();
-//	System.out.println(
-//		"--------------------------------------------------------");
-//	System.out.println(treinador);
-//	treinador.recuperarPokemon();
-//	System.out.println(
-//		"--------------------------------------------------------");
-//	System.out.println(treinador);
-//
-//    }
+    public static void main(String[] args) {
+	Personagem treinador = new Personagem();
+	System.out.println(treinador);
+	treinador.pegarPokebolas();
+	System.out.println(
+		"--------------------------------------------------------");
+	System.out.println(treinador);
+	Pokemon pokemon = new Pokemon("teste", 1, Pokemon.ELECTRIC,
+		Pokemon.VAZIO, null);
+	treinador.pegarPokemon(pokemon);
+	System.out.println(
+		"--------------------------------------------------------");
+	System.out.println(treinador);
+	treinador.vencerBatalha();
+	System.out.println(
+		"--------------------------------------------------------");
+	System.out.println(treinador);
+	treinador.recuperarPokemon();
+	System.out.println(
+		"--------------------------------------------------------");
+	System.out.println(treinador);
+
+    }
+
+    public void draw(Graphics2D g) {
+	g.drawImage(animation.getImage(), this.posX * size, this.posY * size,
+		this.size, this.size, null);
+    }
+
+    public void update() {
+	// TODO Auto-generated method stub
+	if (nextTile()) {
+	    andar();
+	} else {
+	    virarEsquerda();
+	}
+	animation.setFrames(walkingSprites);
+	animation.setDelay(-1);
+	animation.update();
+    }
 }

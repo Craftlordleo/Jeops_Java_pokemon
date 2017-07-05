@@ -6,9 +6,9 @@ import java.util.List;
 
 public class Tile {
     public static final int GRAMA = 0;
-    public static final int LAVA = 1;
+    public static final int LAVA = 3;
     public static final int AGUA = 2;
-    public static final int MONTANHA = 3;
+    public static final int MONTANHA = 1;
     public static final int CAVERNA = 4;
 
     public static final int VAZIO = 0;

@@ -1,0 +1,14 @@
+package aplicacao;
+
+public ruleBase MiniAgente {
+
+    rule testeTile{
+        declarations
+            //System.out.println("Tile");
+			Tile t;
+        conditions
+            t.getOcupado() == 0;
+        actions
+            System.out.println("Tile vazio");
+    }
+}
