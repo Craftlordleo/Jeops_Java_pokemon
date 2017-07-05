@@ -21,6 +21,8 @@ public class Personagem {
     private boolean agua;
     private boolean lava;
     private boolean caverna;
+    
+    private TileMap mapa;
 
     public Personagem() {
 	this.pokebolas = 25;
@@ -35,6 +37,7 @@ public class Personagem {
 	this.agua = false;
 	this.lava = false;
 	this.caverna = false;
+	this.mapa = new TileMap();
     }
 
     public Personagem(int pokebolas, int pokemons, int posX, int posY,
@@ -261,6 +264,7 @@ public class Personagem {
     public void vencerBatalha() {
 	this.pontuacao += 150;
 	this.estadoPokemons = FERIDOS;
+	
     }
 
     public void perderBatalha() {

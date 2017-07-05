@@ -84,6 +84,8 @@ public ruleBase Agente {
         actions
             System.out.println("Venceu a batalha");
             p.vencerBatalha();
+            p.getX();
+            
             modified(p);
     }
 

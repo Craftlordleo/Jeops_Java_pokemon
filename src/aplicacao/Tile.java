@@ -1,5 +1,9 @@
 package aplicacao;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 public class Tile {
     public static final int GRAMA = 0;
     public static final int LAVA = 1;
@@ -10,12 +14,19 @@ public class Tile {
     public static final int VAZIO = 0;
     public static final int CENTRO = -1;
     public static final int LOJA = -2;
-    public static final int TREINADOR = -3;
+    public static final int LOJA_VAZIA = -3;
+    public static final int TREINADOR = -4;
+    public static final int TREINADOR_DERROTADO = -5;
     // public static final int POKEMON = 1;// id dos 151??
     // pokemons vai usar o propio id
 
+    public static final int PERFUME = -1;
+    public static final int VENDEDOR = -2;
+    public static final int GRITO_TREINADOR = -3;
+
     private int ocupado = Tile.VAZIO;
     private int terreno = Tile.GRAMA;
+    private List<Integer> percepcoes = new ArrayList<Integer>();
 
     public Tile() {
 	this.ocupado = Tile.VAZIO;
@@ -86,9 +97,31 @@ public class Tile {
 	    string = "Pokemon - "
 		    + new Pokedex().getPokemon(this.getOcupado()).getNome();
 	    break;
-
 	}
 	return string;
+    }
+
+    public List<Integer> getPercepcoes() {
+	return percepcoes;
+    }
+
+    public void setPercepcoes(List<Integer> percepcoes) {
+	this.percepcoes = percepcoes;
+    }
+
+    public void adicionaPercepcao(int percepcao) {
+	percepcoes.add(percepcao);
+    }
+
+    public void removePercepcao(int percepcao) {
+	Iterator it = percepcoes.iterator();
+	while (it.hasNext()) {
+	    Integer valor = (Integer) it.next();
+	    if (valor == percepcao) {
+		percepcoes.remove(percepcao);
+		break;
+	    }
+	}
     }
 
     public String toString() {

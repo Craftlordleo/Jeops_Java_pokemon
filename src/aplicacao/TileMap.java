@@ -1,5 +1,8 @@
 package aplicacao;
 
+import java.awt.print.PrinterException;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -29,6 +32,32 @@ public class TileMap {
 	this.centros = centros;
 	this.lojas = lojas;
 	this.pokemons = pokemons;
+
+    }
+
+    public void reader(String s, int tileSize) {
+
+	try {
+	    BufferedReader br = new BufferedReader(new FileReader(s));
+	    this.maxX = Integer.parseInt(br.readLine());
+	    this.maxY = Integer.parseInt(br.readLine());
+	    // map = new int[mapHeight][mapWidth];
+	    String delimiters = " ";
+	    for (int row = 0; row < this.maxY; row++) {
+		String line = br.readLine();
+		String[] tokens = line.split(delimiters);
+		for (int col = 0; col < this.maxX; col++) {
+		    Tile tile = new Tile();
+		    tile.setTerreno(Integer.parseInt(tokens[col]));
+		    this.tiles.add(tile);
+		}
+	    }
+	}
+
+	catch (Exception e) {
+	    System.out.println(e.getStackTrace());
+	}
+
     }
 
     public void geraTiles() {
@@ -75,6 +104,10 @@ public class TileMap {
 
     }
 
+    public void apagaTreinador() {
+
+    }
+
     public void espalhaLojas() {
 	Random gerador = new Random();
 	Tile tile = null;
@@ -102,7 +135,113 @@ public class TileMap {
 		tile.setOcupado(valor);
 		quantidade--;
 		tiles.set(index, tile);
+		espalhaPercepcao(index, valor);
 	    }
+	}
+    }
+
+    public void espalhaPercepcao(int posicao, int valor) {
+	if (posicao == 0) { // canto superior esquerdo
+	    tiles.get(posicao + 1).adicionaPercepcao(valor);
+	    tiles.get(posicao + maxX).adicionaPercepcao(valor);
+
+	} else if (posicao == maxX - 1) { // canto superior direito
+	    tiles.get(posicao - 1).adicionaPercepcao(valor);
+	    tiles.get(posicao + maxX).adicionaPercepcao(valor);
+
+	} else if (posicao == maxX * maxY - 1) { // canto inferior direito
+	    tiles.get(posicao - 1).adicionaPercepcao(valor);
+	    tiles.get(posicao - maxX).adicionaPercepcao(valor);
+
+	} else if (posicao == maxX * (maxY - 1)) { // canto inferior esquerdo
+	    tiles.get(posicao + 1).adicionaPercepcao(valor);
+	    tiles.get(posicao - maxX).adicionaPercepcao(valor);
+
+	} else if (posicao % maxX == 0) { // esquerdo
+	    tiles.get(posicao + 1).adicionaPercepcao(valor);
+	    tiles.get(posicao - maxX).adicionaPercepcao(valor);
+	    tiles.get(posicao + maxX).adicionaPercepcao(valor);
+
+	} else if (posicao < maxX) { // superior
+	    tiles.get(posicao + 1).adicionaPercepcao(valor);
+	    tiles.get(posicao - 1).adicionaPercepcao(valor);
+	    tiles.get(posicao + maxX).adicionaPercepcao(valor);
+
+	} else if (posicao % maxX == maxY - 1) { // direito
+	    tiles.get(posicao - 1).adicionaPercepcao(valor);
+	    tiles.get(posicao - maxX).adicionaPercepcao(valor);
+	    tiles.get(posicao + maxX).adicionaPercepcao(valor);
+
+	} else if (posicao / maxX >= maxY - 1) { // inferior
+	    tiles.get(posicao + 1).adicionaPercepcao(valor);
+	    tiles.get(posicao - 1).adicionaPercepcao(valor);
+	    tiles.get(posicao - maxX).adicionaPercepcao(valor);
+
+	} else {
+	    tiles.get(posicao - 1).adicionaPercepcao(valor);
+	    tiles.get(posicao + 1).adicionaPercepcao(valor);
+	    tiles.get(posicao + maxX).adicionaPercepcao(valor);
+	    tiles.get(posicao - maxX).adicionaPercepcao(valor);
+	}
+    }
+
+    public void removeThing(int valor, int posicao) {
+	Tile tile = this.tiles.get(posicao);
+
+	switch (valor) {
+	case Tile.TREINADOR:
+	    tile.setOcupado(Tile.TREINADOR_DERROTADO);
+	    removePercepcao(posicao, Tile.TREINADOR);
+	    break;
+	case Tile.LOJA:
+	    tile.setOcupado(Tile.LOJA_VAZIA);
+//	    removePercepcao(posicao, Tile.LOJA);	    
+	    break;
+	}
+    }
+
+    public void removePercepcao(int posicao, int valor) {
+	if (posicao == 0) { // canto superior esquerdo
+	    tiles.get(posicao + 1).removePercepcao(valor);
+	    tiles.get(posicao + maxX).removePercepcao(valor);
+
+	} else if (posicao == maxX - 1) { // canto superior direito
+	    tiles.get(posicao - 1).removePercepcao(valor);
+	    tiles.get(posicao + maxX).removePercepcao(valor);
+
+	} else if (posicao == maxX * maxY - 1) { // canto inferior direito
+	    tiles.get(posicao - 1).removePercepcao(valor);
+	    tiles.get(posicao - maxX).removePercepcao(valor);
+
+	} else if (posicao == maxX * (maxY - 1)) { // canto inferior esquerdo
+	    tiles.get(posicao + 1).removePercepcao(valor);
+	    tiles.get(posicao - maxX).removePercepcao(valor);
+
+	} else if (posicao % maxX == 0) { // esquerdo
+	    tiles.get(posicao + 1).removePercepcao(valor);
+	    tiles.get(posicao - maxX).removePercepcao(valor);
+	    tiles.get(posicao + maxX).removePercepcao(valor);
+
+	} else if (posicao < maxX) { // superior
+	    tiles.get(posicao + 1).removePercepcao(valor);
+	    tiles.get(posicao - 1).removePercepcao(valor);
+	    tiles.get(posicao + maxX).removePercepcao(valor);
+
+	} else if (posicao % maxX == maxY - 1) { // direito
+	    tiles.get(posicao - 1).removePercepcao(valor);
+	    tiles.get(posicao - maxX).removePercepcao(valor);
+	    tiles.get(posicao + maxX).removePercepcao(valor);
+
+	} else if (posicao / maxX >= maxY - 1) { // inferior
+	    tiles.get(posicao + 1).removePercepcao(valor);
+	    tiles.get(posicao - 1).removePercepcao(valor);
+	    tiles.get(posicao - maxX).removePercepcao(valor);
+
+	} else {
+	    tiles.get(posicao - 1).removePercepcao(valor);
+	    tiles.get(posicao + 1).removePercepcao(valor);
+	    tiles.get(posicao + maxX).removePercepcao(valor);
+	    tiles.get(posicao - maxX).removePercepcao(valor);
 	}
     }
 
@@ -225,9 +364,12 @@ public class TileMap {
 
     public static void main(String[] args) {
 	TileMap map = new TileMap();
-	map.geraTiles();
+	// map.geraTiles();
+	map.reader(
+		"C:\\Users\\Carlos\\Dropbox\\Work\\PokemonJeopsWeb\\build\\classes\\aplicacao\\testmap.txt",
+		20);
 	map.geraElementos();
-	// System.out.println(map.toString());
+	System.out.println(map.toString());
 	System.out.println(map.getConfiguracao());
 	System.out.println(map.getTile(25, 20).toString());
 	System.out.println(
