@@ -11,7 +11,7 @@ import java.util.logging.XMLFormatter;
 public class ILog {
 
 	public static ILog instancia;
-	private static final Logger LOG = Logger.getLogger(HelloLogging.class.getName());
+	private static final Logger LOG = Logger.getLogger(ILog.class.getName());
 
 	protected ILog() {
 	}
