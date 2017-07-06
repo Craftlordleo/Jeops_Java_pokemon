@@ -53,11 +53,12 @@ public class Personagem {
 	this.mapa = new TileMap();
 	animation = new Animation();
 	this.iLog = ILog.getInstancia();
+	String walking = "\\recurso\\walking.gif";
+	String path = System.getProperty("user.dir");
 
 	try {
 	    walkingSprites = new BufferedImage[1];
-	    walkingSprites[0] = ImageIO.read(new File(
-		    "C:/Users/Carlos/Dropbox/Work/PokemonJeopsWeb/recurso/walking.gif"));
+	    walkingSprites[0] = ImageIO.read(new File(path + walking));
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}

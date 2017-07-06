@@ -31,6 +31,12 @@ public class TileMap {
     private BufferedImage[] treinadorImagem;
     private BufferedImage[] centroImagem;
     private Animation animation;
+    private final String testmap = "\\recurso\\testmap.txt";
+    private final String loja = "\\recurso\\loja.gif";
+    private final String pokemon = "\\recurso\\pokemon.gif";
+    private final String centro = "\\recurso\\centro.gif";
+    private final String treinador = "\\recurso\\treinador.gif";
+    private final  String path = System.getProperty("user.dir");
 
     private ArrayList<Tile> tiles = new ArrayList<>();
 
@@ -47,25 +53,20 @@ public class TileMap {
 	this.tileSize = 15;
 	this.animation = new Animation();
 	// this.tiles.add(new Tile());
-	this.reader(
-		"C:/Users/Carlos/Dropbox/Work/PokemonJeopsWeb/recurso/testmap.txt",
+	this.reader(path + testmap,
 		15);
 	try {
 	    lojaImagem = new BufferedImage[1];
-	    lojaImagem[0] = ImageIO.read(new File(
-		    "C:/Users/Carlos/Dropbox/Work/PokemonJeopsWeb/recurso/loja.gif"));
+	    lojaImagem[0] = ImageIO.read(new File(path + loja));
 
 	    pokemonImagem = new BufferedImage[1];
-	    pokemonImagem[0] = ImageIO.read(new File(
-		    "C:/Users/Carlos/Dropbox/Work/PokemonJeopsWeb/recurso/pokemon.gif"));
+	    pokemonImagem[0] = ImageIO.read(new File(path + pokemon));
 
 	    centroImagem = new BufferedImage[1];
-	    centroImagem[0] = ImageIO.read(new File(
-		    "C:/Users/Carlos/Dropbox/Work/PokemonJeopsWeb/recurso/centro.gif"));
+	    centroImagem[0] = ImageIO.read(new File(path + centro));
 
 	    treinadorImagem = new BufferedImage[1];
-	    treinadorImagem[0] = ImageIO.read(new File(
-		    "C:/Users/Carlos/Dropbox/Work/PokemonJeopsWeb/recurso/treinador.gif"));
+	    treinadorImagem[0] = ImageIO.read(new File(path + treinador));
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
@@ -756,9 +757,10 @@ public class TileMap {
 
     public static void main(String[] args) {
 	TileMap map = new TileMap();
+	String path = System.getProperty("user.dir");
+    String testmap = "\\recurso\\testmap.txt";
 	// map.geraTiles();
-	map.reader(
-		"C:\\Users\\Carlos\\Dropbox\\Work\\PokemonJeopsWeb\\build\\classes\\aplicacao\\testmap.txt",
+	map.reader(path + testmap,
 		20);
 	map.geraElementos();
 	System.out.println(map.toString());
