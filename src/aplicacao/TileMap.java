@@ -4,20 +4,16 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.awt.Shape;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
-
-import com.sun.javafx.geom.Ellipse2D;
 
 public class TileMap {
     private int treinadores;
@@ -111,8 +107,20 @@ public class TileMap {
 	}
     }
 
+    public Pokedex getPokedex() {
+	return pokedex;
+    }
+
+    public void setPokedex(Pokedex pokedex) {
+	this.pokedex = pokedex;
+    }
+
     public int getTileSize() {
 	return tileSize;
+    }
+
+    public Pokemon getPokemonId(int id) {
+	return pokedex.getPokemon(id);
     }
 
     public void setTileSize(int tileSize) {
@@ -426,6 +434,10 @@ public class TileMap {
 	}
     }
 
+    public void removeThing(int valor, int x, int y) {
+	removeThing(valor, y * maxX + x);
+    }
+
     public void removePercepcao(int posicao, int valor) {
 	if (posicao == 0) { // canto superior esquerdo
 	    tiles.get(posicao + 1).removePercepcao(valor);
@@ -510,8 +522,16 @@ public class TileMap {
 	return tile;
     }
 
+    public Tile getTile(int posicao) {
+	return this.tiles.get(posicao);
+    }
+
     public int getTerrenoAt(int x, int y) {
 	return this.getTile(x, y).getTerreno();
+    }
+
+    public int getTerrenoAt(int posicao) {
+	return this.getTile(posicao).getTerreno();
     }
 
     public int getTreinadores() {

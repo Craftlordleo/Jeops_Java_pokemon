@@ -22,7 +22,7 @@ public class ILog {
 
 		try {
 			Handler console = new ConsoleHandler();
-			Handler file = new FileHandler("C:\\log\\loggin.xml");
+			Handler file = new FileHandler("loggin.xml");
 			/*
 			 * Define que na consola apenas aparece log com nível superior ou a
 			 * warning e no ficheiro deve aparecer o log de qualquer nível

@@ -208,7 +208,7 @@ public class Pokemon {
 	return string;
     }
 
-    // public static void main(String[] args) {
-    // System.out.println("teste pokemons");
-    // }
+    public static void main(String[] args) {
+	System.out.println("teste pokemons");
+    }
 }

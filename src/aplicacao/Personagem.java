@@ -29,6 +29,7 @@ public class Personagem {
     private boolean caverna;
 
     private TileMap mapa;
+    private ILog iLog;
 
     private BufferedImage[] walkingSprites;
     private Animation animation;
@@ -50,6 +51,7 @@ public class Personagem {
 	this.caverna = false;
 	this.mapa = new TileMap();
 	animation = new Animation();
+	this.iLog = ILog.getInstancia();
 
 	try {
 	    walkingSprites = new BufferedImage[1];
@@ -72,6 +74,7 @@ public class Personagem {
 	this.direcao = direcao;
 	this.estadoPokemons = estadoPokemons;
 	this.pontuacao = pontuacao;
+	this.iLog = ILog.getInstancia();
     }
 
     public TileMap getMapa() {
@@ -210,6 +213,10 @@ public class Personagem {
     public void pegarPokebolas() {
 	this.pontuacao -= 10;
 	this.incrementaPokebolas(25);
+	iLog.setLog("Pegou pokebolas",
+		"pegou 25 pokebolas, agora tem um total de: "
+			+ getPokebolasTotal());
+
     }
 
     public void andar() {
@@ -229,6 +236,8 @@ public class Personagem {
 	    this.posX += 1;
 	    break;
 	}
+
+	iLog.setLog("Andou", "para o " + this.getDirecaoString());
     }
 
     public void pegarPokemon(Pokemon pokemon) {
@@ -268,6 +277,9 @@ public class Personagem {
 	    this.lava = true;
 	    break;
 	}
+
+	iLog.setLog("Pegar Pokemon", "pegou " + pokemon.getNome());
+
     }
 
     public void virarDireita() {
@@ -287,6 +299,10 @@ public class Personagem {
 	    this.direcao = NORTE;
 	    break;
 	}
+	iLog.setLog("Virar a direita",
+		"virou a direita, agora esta olhando para o "
+			+ getDirecaoString());
+
     }
 
     public void virarEsquerda() {
@@ -306,21 +322,28 @@ public class Personagem {
 	    this.direcao = SUL;
 	    break;
 	}
+	iLog.setLog("Virar a esquerda",
+		"virou a esquerda, agora esta olhando para o "
+			+ getDirecaoString());
     }
 
     public void recuperarPokemon() {
 	this.pontuacao -= 100;
 	this.estadoPokemons = CURADOS;
+	iLog.setLog("Recuperar pokemon", "recuperou os pokemons");
     }
 
     public void vencerBatalha() {
 	this.pontuacao += 150;
 	this.estadoPokemons = FERIDOS;
-
+	iLog.setLog("Venceu a batalha",
+		"parabens, agora tem " + getPontuacao() + " pontos");
     }
 
     public void perderBatalha() {
 	this.pontuacao -= 1000;
+	iLog.setLog("Perdeu a batalha", "melhor sorte na proxima, agora tem "
+		+ getPontuacao() + " pontos");
     }
 
     public String getDirecaoString() {
@@ -359,6 +382,28 @@ public class Personagem {
 	string += "\nMontanha: " + this.isMontanha();
 
 	return string;
+    }
+
+    public int getProximaPosicao() {
+	int auxX = this.posX;
+	int auxY = this.posY;
+
+	switch (this.getDirecao()) {
+	case Personagem.NORTE:
+	    auxY -= 1;
+	    break;
+	case Personagem.SUL:
+	    auxY += 1;
+	    break;
+	case Personagem.OESTE:
+	    auxX -= 1;
+	    break;
+	case Personagem.LESTE:
+	    auxX += 1;
+	    break;
+	}
+
+	return auxY * 42 + auxX;
     }
 
     public boolean nextTile() {

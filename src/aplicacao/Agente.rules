@@ -4,115 +4,202 @@ public ruleBase Agente {
 
     rule Andar_loja_vazia{
         declarations
-            Pokemon poke;
-            Personagem p;
+            Pokemon pokemon;
+            TileMap tileMap;
+            Personagem personagem;
+        localdecl
+            Integer posX = personagem.getPosX();
+            Integer posY = personagem.getPosY();
+            Tile tile = tileMap.getTileAt(posX, posY);
         conditions
-            p.nextTile();
-            tileMap.getTileAt(p.getPosX(),p.getPosY).getOcupado() == Tile.LOJA_VAZIA;
-            tileMap.getTileAt(p.getPosX(),p.getPosY).getTerreno() == Tile.GRAMA;            
+            personagem.nextTile();
+            tile.getOcupado() == Tile.LOJA_VAZIA;
+            tileMap.getTerrenoAt(personagem.getProximaPosicao()) == Tile.GRAMA;
         actions
             System.out.println("Saiu da loja vazia foi pra grama...");
-            p.andar();
-            modified(p);
+            personagem.andar();
+            modified(personagem);
     }
-    rule Andar{
+    rule AndarGrama{
         declarations
-            Pokemon poke;
-            Personagem p;
+            TileMap tileMap;
+            Personagem personagem;
+        localdecl
+           Integer posX = personagem.getPosX();
+           Integer posY = personagem.getPosY();
+            Tile tile = tileMap.getTileAt(posX, posY);
         conditions
-            p.nextTile();
-            se tem loja vazia
-            // pode ir pra frente?
-            // já explorou o tile
+            personagem.nextTile();
+            tileMap.getTerrenoAt(personagem.getProximaPosicao()) == Tile.GRAMA;
+            tile.getOcupado() == Tile.VAZIO;
         actions
-            System.out.println("Andou");
-            p.andar();
-            modified(p);
+            System.out.println("Andou s� de teste na grama");
+            personagem.andar();
+            modified(personagem);
     }
 
     rule AndarAgua{
-        declarations//teste
-            Pokemon poke;
-            Personagem p;
-            TileMap tm;
-            Tile tile;
+        declarations
+            TileMap tileMap;
+            Personagem personagem;
+        localdecl
+           Integer posX = personagem.getPosX();
+           Integer posY = personagem.getPosY();
+            Tile tile = tileMap.getTileAt(posX, posY);
         conditions
-            p.nextTile();
-            p.isAgua();
-            tm.getTerrenoAt(p.getPosX(), p.getPosY()) == Tile.AGUA;
-            // pode ir pra frente?
-            // já explorou o tile
+            personagem.nextTile();
+            personagem.isAgua();
+            tileMap.getTerrenoAt(personagem.getProximaPosicao()) == Tile.AGUA;
         actions
             System.out.println("Andou na agua");
-            p.andar();
-            modified(p);
+            personagem.andar();
+            modified(personagem);
     }
-
+    
+    rule AndarMontanha{
+        declarations
+            TileMap tileMap;
+            Personagem personagem;
+        localdecl
+           Integer posX = personagem.getPosX();
+           Integer posY = personagem.getPosY();
+            Tile tile = tileMap.getTileAt(posX, posY);
+        conditions
+            personagem.nextTile();
+            personagem.isMontanha();
+            tileMap.getTerrenoAt(personagem.getProximaPosicao()) == Tile.MONTANHA;
+        actions
+            System.out.println("Andou na montanha");
+            personagem.andar();
+            modified(personagem);
+    }  
+    
+      rule AndarLava{
+        declarations
+            TileMap tileMap;
+            Personagem personagem;
+        localdecl
+           Integer posX = personagem.getPosX();
+           Integer posY = personagem.getPosY();
+            Tile tile = tileMap.getTileAt(posX, posY);
+        conditions
+            personagem.nextTile();
+            personagem.isLava();
+            tileMap.getTerrenoAt(personagem.getProximaPosicao()) == Tile.LAVA;
+        actions
+            System.out.println("Andou na lava");
+            personagem.andar();
+            modified(personagem);
+    }
+    
+        rule AndarCaverna{
+        declarations
+            TileMap tileMap;
+            Personagem personagem;
+        localdecl
+           Integer posX = personagem.getPosX();
+           Integer posY = personagem.getPosY();
+            Tile tile = tileMap.getTileAt(posX, posY);
+        conditions
+            personagem.nextTile();
+            personagem.isCaverna();
+            tileMap.getTerrenoAt(personagem.getProximaPosicao()) == Tile.CAVERNA;
+        actions
+            System.out.println("Andou na caverna");
+            personagem.andar();
+            modified(personagem);
+    }
+    
     rule PegaPokebola{
         declarations
-            Pokemon poke;
-            Personagem p;
+            TileMap tileMap;
+            Personagem personagem;
+        localdecl
+           Integer posX = personagem.getPosX();
+           Integer posY = personagem.getPosY();
+            Tile tile = tileMap.getTileAt(posX, posY);
         conditions
-            p.getPokebolasTotal() < 151;
-            // precisa estar na loja
+            personagem.getPokebolasTotal() < 151;
+            tile.getOcupado() == Tile.LOJA;
         actions
             System.out.println("Pegou pokebolas");
-            p.pegarPokebolas();
-            modified(p);
+            personagem.pegarPokebolas();
+            tileMap.removeThing(Tile.LOJA, posX, posY);
+            modified(personagem);
+            modified(tileMap);
     }
 
     rule PegaPokemon{
         declarations
-            Pokemon poke;
-            Personagem p;
+            TileMap tileMap;
+            Personagem personagem;
+        localdecl
+           Integer posX = personagem.getPosX();
+           Integer posY = personagem.getPosY();
+            Tile tile = tileMap.getTileAt(posX, posY);
+           Integer ocupado = tile.getOcupado();
         conditions
-            p.getPokebolas() > 0;
-            // precisa ter pokemon no Tile atual
+            personagem.getPokebolas() > 0;
+            ocupado > 0;// eh o id de pokemon
         actions
             System.out.println("Pegou pokemons");
-            p.pegarPokemon(new Pokemon()); // precisa pasar um Pokemon por parametro
-            modified(p);
+            personagem.pegarPokemon(tileMap.getPokemon(ocupado));
+            tileMap.removeThing(ocupado, posX, posY);
+            modified(personagem);
+            modified(tileMap);
     }
 
     rule RecuperaPokemons{
         declarations
-            Pokemon poke;
-            Personagem p;
+            TileMap tileMap;
+            Personagem personagem;
+        localdecl
+           Integer posX = personagem.getPosX();
+           Integer posY = personagem.getPosY();
+            Tile tile = tileMap.getTileAt(posX, posY);
         conditions
-            p.getPokemons() > 0;
-            p.getEstadoPokemons()==Personagem.FERIDOS;
-            // precisa estar no Centro pokemon
+            personagem.getPokemons() > 0;
+            personagem.getEstadoPokemons()==Personagem.FERIDOS;
+            tile.getOcupado() == Tile.CENTRO;
         actions
             System.out.println("Recuperou pokemons");
-            p.recuperarPokemon();
-            modified(p);
+            personagem.recuperarPokemon();
+            modified(personagem);
     }
 
     rule VenceBatalha{
         declarations
-            Pokemon poke;
-            Personagem p;
+            TileMap tileMap;
+            Personagem personagem;
+        localdecl
+           Integer posX = personagem.getPosX();
+           Integer posY = personagem.getPosY();
+            Tile tile = tileMap.getTileAt(posX, posY);
         conditions
-            p.getEstadoPokemons()==Personagem.CURADOS;
-            p.get_EsseTile() se tem desafiante
+            personagem.getEstadoPokemons()==Personagem.CURADOS;
+            tile.getOcupado() == Tile.TREINADOR;
         actions
             System.out.println("Venceu a batalha");
-            p.vencerBatalha();
-            p.getX();
-            
-            modified(p);
+            personagem.vencerBatalha();
+            tileMap.removeThing(Tile.TREINADOR, posX, posY);
+            modified(personagem);
+            modified(tileMap);
     }
 
-    rule PerdeBatalha{
+    rule PerderBatalha{
         declarations
-            Pokemon poke;
-            Personagem p;
+            TileMap tileMap;
+            Personagem personagem;
+        localdecl
+           Integer posX = personagem.getPosX();
+           Integer posY = personagem.getPosY();
+            Tile tile = tileMap.getTileAt(posX, posY);
         conditions
-            p.getEstadoPokemons()==Personagem.FERIDOS;
-            // precisa ter Treinador no Tile atual
+            personagem.getEstadoPokemons() == Personagem.FERIDOS;
+            tile.getOcupado() == Tile.TREINADOR;
         actions
             System.out.println("Perdeu a batalha");
-            p.perderBatalha();
-            modified(p);
+            personagem.perderBatalha();
+            modified(personagem);
     }
 }
