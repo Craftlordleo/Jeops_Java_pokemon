@@ -7,8 +7,78 @@ public ruleBase MiniAgente {
             //System.out.println("Tile");
 			Tile t;
         conditions
-            t.getOcupado() == 0;
+            t.getOcupado() == Tile.VAZIO;
         actions
             System.out.println("Tile vazio");
     }
+    
+    rule InicializaMapa{
+        declarations
+            TileMap tileMap;
+            //Personagem personagem;
+        conditions
+            tileMap == null;
+        actions
+            System.out.println("inicializou mapa");
+            tileMap = new TileMap();
+            tileMap.geraElementos();
+            modified(tileMap);
+    }
+    
+    rule InicializaPersonagem{
+        declarations
+            //TileMap tileMap;
+            Personagem personagem;
+        conditions
+            personagem == null;
+        actions
+            System.out.println("inicializou personagem");
+            personagem = new Personagem();
+            modified(personagem);
+    }
+    
+    rule tileAtual{
+        declarations
+            TileMap tileMap;
+            Personagem personagem;
+            Tile tile;
+        conditions
+            personagem.nextTile();
+            tile == null;
+        actions
+            System.out.println("inicializou personagem");
+            Integer posX = personagem.getPosX();
+            Integer posY = personagem.getPosY();
+            tile = tileMap.getTile(posX, posY);
+            modified(tile);
+    }
+    
+       rule Andar{
+        declarations
+            TileMap tileMap;
+            Personagem personagem;
+            Tile tile;
+        localdecl
+            Integer posX = personagem.getPosX();
+            Integer posY = personagem.getPosY();
+            //Tile tile = tileMap.getTileAt(posX, posY);
+        conditions
+            personagem.nextTile();
+            (tileMap.getTerrenoAt(personagem.getProximaPosicao()) == Tile.GRAMA
+            || (tileMap.getTerrenoAt(personagem.getProximaPosicao()) == Tile.MONTANHA &&
+            personagem.isMontanha())
+            || (tileMap.getTerrenoAt(personagem.getProximaPosicao()) == Tile.AGUA &&
+            personagem.isAgua())
+            || (tileMap.getTerrenoAt(personagem.getProximaPosicao()) == Tile.LAVA &&
+            personagem.isLava())
+            || (tileMap.getTerrenoAt(personagem.getProximaPosicao()) == Tile.CAVERNA &&
+            personagem.isCaverna())
+            );
+            tile.getOcupado() == Tile.VAZIO;
+        actions
+            System.out.println("Andou " + tile.getT);
+            personagem.andar();
+            modified(personagem);
+        }
+    
 }

@@ -89,7 +89,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener {
 	try {
 	    Thread.sleep(1000);
 	    tileMap.update();
-	    personagem.update();
+	    personagem.update(tileMap);
 	    // player.update();
 	} catch (InterruptedException e) {
 	    // TODO Auto-generated catch block

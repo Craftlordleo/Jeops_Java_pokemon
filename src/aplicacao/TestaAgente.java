@@ -7,6 +7,7 @@ public class TestaAgente {
 	TileMap tileMap = new TileMap();
 	tileMap.geraElementos();
 	Personagem personagem = new Personagem();
+	Pokemon pokemon = new Pokemon();
 
 	base.tell(tileMap);
 	base.tell(personagem);

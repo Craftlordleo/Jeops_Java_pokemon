@@ -46,6 +46,7 @@ public class TileMap {
 	this.maxY = 42;
 	this.tileSize = 15;
 	this.animation = new Animation();
+	// this.tiles.add(new Tile());
 	this.reader(
 		"C:/Users/Carlos/Dropbox/Work/PokemonJeopsWeb/recurso/testmap.txt",
 		15);
@@ -78,6 +79,7 @@ public class TileMap {
 	this.centros = centros;
 	this.lojas = lojas;
 	this.pokemons = pokemons;
+	// this.tiles.add(new Tile());
 	this.reader(
 		"C:/Users/Carlos/Dropbox/Work/PokemonJeopsWeb/recurso/testmap.txt",
 		15);
@@ -97,14 +99,23 @@ public class TileMap {
 		for (int col = 0; col < this.maxX; col++) {
 		    Tile tile = new Tile();
 		    tile.setTerreno(Integer.parseInt(tokens[col]));
-		    this.tiles.add(tile);
+		    this.adicionaTile(tile);
 		}
 	    }
 	    // br.close();
-	    System.out.println(this.tiles.isEmpty());
+	    System.out.println("lista vazia: " + this.listaVazia());
 	} catch (Exception e) {
 	    e.getStackTrace();
 	}
+    }
+
+    public void adicionaTile(Tile tile) {
+	this.tiles.add(tile);
+    }
+
+    public boolean listaVazia() {
+	// return this.tiles.size() > 1;
+	return this.tiles.isEmpty();
     }
 
     public Pokedex getPokedex() {
@@ -133,7 +144,7 @@ public class TileMap {
 	    for (int j = 0; j < this.maxY; j++) {
 		Tile tile = new Tile();
 		tile.setTerreno(gerador.nextInt(5));
-		this.tiles.add(tile);
+		this.adicionaTile(tile);
 	    }
 	}
     }
@@ -145,13 +156,17 @@ public class TileMap {
 
 	while (trainers > 0) {
 	    int index = gerador.nextInt(maxX * maxY);
-	    tile = tiles.get(index);
+	    tile = getTile(index);
 	    if (tile.getOcupado() == Tile.VAZIO) {
 		tile.setOcupado(Tile.TREINADOR);
 		trainers--;
-		tiles.set(index, tile);
+		this.atualizaTile(tile, index);
 	    }
 	}
+    }
+
+    public void atualizaTile(Tile tile, int index) {
+	this.tiles.set(index, tile);
     }
 
     public void espalhaCentros() {
@@ -161,11 +176,11 @@ public class TileMap {
 
 	while (center > 0) {
 	    int index = gerador.nextInt(maxX * maxY);
-	    tile = tiles.get(index);
+	    tile = this.getTile(index);
 	    if (tile.getOcupado() == Tile.VAZIO) {
 		tile.setOcupado(Tile.CENTRO);
 		center--;
-		tiles.set(index, tile);
+		this.atualizaTile(tile, index);
 	    }
 	}
 
@@ -182,11 +197,13 @@ public class TileMap {
 
 	while (shop > 0) {
 	    int index = gerador.nextInt(maxX * maxY);
-	    tile = tiles.get(index);
+	    // tile = tiles.get(index);
+	    tile = this.getTile(index);
 	    if (tile.getOcupado() == Tile.VAZIO) {
 		tile.setOcupado(Tile.LOJA);
 		shop--;
-		tiles.set(index, tile);
+		// tiles.set(index, tile);
+		this.atualizaTile(tile, index);
 	    }
 	}
     }
@@ -197,11 +214,13 @@ public class TileMap {
 
 	while (quantidade > 0) {
 	    int index = gerador.nextInt(maxX * maxY);
-	    tile = tiles.get(index);
+	    // tile = tiles.get(index);
+	    tile = this.getTile(index);
 	    if (tile.getOcupado() == Tile.VAZIO && verificaEstado(index)) {
 		tile.setOcupado(valor);
 		quantidade--;
-		tiles.set(index, tile);
+		// tiles.set(index, tile);
+		this.atualizaTile(tile, index);
 		espalhaPercepcao(index, valor);
 	    }
 	}
@@ -212,26 +231,26 @@ public class TileMap {
 	Tile tile = null;
 
 	if (posicao == 0) { // canto superior esquerdo
-	    tile = tiles.get(posicao + 1);
+	    tile = this.getTile(posicao + 1);
 	    if (!tile.getPercepcoes().isEmpty()
 		    || tile.getOcupado() != Tile.VAZIO) {
 		return false;
 	    }
 
-	    tile = tiles.get(posicao + maxX);
+	    tile = this.getTile(posicao + maxX);
 	    if (!tile.getPercepcoes().isEmpty()
 		    || tile.getOcupado() != Tile.VAZIO) {
 		return false;
 
 	    }
 	} else if (posicao == maxX - 1) { // canto superior direito
-	    tile = tiles.get(posicao - 1);
+	    tile = this.getTile(posicao - 1);
 	    if (!tile.getPercepcoes().isEmpty()
 		    || tile.getOcupado() != Tile.VAZIO) {
 		return false;
 
 	    }
-	    tile = tiles.get(posicao + maxX);
+	    tile = this.getTile(posicao + maxX);
 	    if (!tile.getPercepcoes().isEmpty()
 		    || tile.getOcupado() != Tile.VAZIO) {
 		return false;
@@ -239,45 +258,45 @@ public class TileMap {
 	    }
 
 	} else if (posicao == maxX * maxY - 1) { // canto inferior direito
-	    tile = tiles.get(posicao - 1);
+	    tile = this.getTile(posicao - 1);
 	    if (!tile.getPercepcoes().isEmpty()
 		    || tile.getOcupado() != Tile.VAZIO) {
 		return false;
 
 	    }
-	    tile = tiles.get(posicao - maxX);
+	    tile = this.getTile(posicao - maxX);
 	    if (!tile.getPercepcoes().isEmpty()
 		    || tile.getOcupado() != Tile.VAZIO) {
 		return false;
 
 	    }
 	} else if (posicao == maxX * (maxY - 1)) { // canto inferior esquerdo
-	    tile = tiles.get(posicao + 1);
+	    tile = this.getTile(posicao + 1);
 	    if (!tile.getPercepcoes().isEmpty()
 		    || tile.getOcupado() != Tile.VAZIO) {
 		return false;
 
 	    }
-	    tile = tiles.get(posicao - maxX);
+	    tile = this.getTile(posicao - maxX);
 	    if (!tile.getPercepcoes().isEmpty()
 		    || tile.getOcupado() != Tile.VAZIO) {
 		return false;
 
 	    }
 	} else if (posicao % maxX == 0) { // esquerdo
-	    tile = tiles.get(posicao + 1);
+	    tile = this.getTile(posicao + 1);
 	    if (!tile.getPercepcoes().isEmpty()
 		    || tile.getOcupado() != Tile.VAZIO) {
 		return false;
 
 	    }
-	    tile = tiles.get(posicao - maxX);
+	    tile = this.getTile(posicao - maxX);
 	    if (!tile.getPercepcoes().isEmpty()
 		    || tile.getOcupado() != Tile.VAZIO) {
 		return false;
 
 	    }
-	    tile = tiles.get(posicao + maxX);
+	    tile = this.getTile(posicao + maxX);
 	    if (!tile.getPercepcoes().isEmpty()
 		    || tile.getOcupado() != Tile.VAZIO) {
 		return false;
@@ -285,82 +304,82 @@ public class TileMap {
 	    }
 
 	} else if (posicao < maxX) { // superior
-	    tile = tiles.get(posicao + 1);
+	    tile = this.getTile(posicao + 1);
 	    if (!tile.getPercepcoes().isEmpty()
 		    || tile.getOcupado() != Tile.VAZIO) {
 		return false;
 
 	    }
-	    tile = tiles.get(posicao - 1);
+	    tile = this.getTile(posicao - 1);
 	    if (!tile.getPercepcoes().isEmpty()
 		    || tile.getOcupado() != Tile.VAZIO) {
 		return false;
 
 	    }
-	    tile = tiles.get(posicao + maxX);
+	    tile = this.getTile(posicao + maxX);
 	    if (!tile.getPercepcoes().isEmpty()
 		    || tile.getOcupado() != Tile.VAZIO) {
 		return false;
 
 	    }
 	} else if (posicao % maxX == maxY - 1) { // direito
-	    tile = tiles.get(posicao - 1);
+	    tile = this.getTile(posicao - 1);
 	    if (!tile.getPercepcoes().isEmpty()
 		    || tile.getOcupado() != Tile.VAZIO) {
 		return false;
 
 	    }
-	    tile = tiles.get(posicao - maxX);
+	    tile = this.getTile(posicao - maxX);
 	    if (!tile.getPercepcoes().isEmpty()
 		    || tile.getOcupado() != Tile.VAZIO) {
 		return false;
 
 	    }
-	    tile = tiles.get(posicao + maxX);
+	    tile = this.getTile(posicao + maxX);
 	    if (!tile.getPercepcoes().isEmpty()
 		    || tile.getOcupado() != Tile.VAZIO) {
 		return false;
 
 	    }
 	} else if (posicao / maxX >= maxY - 1) { // inferior
-	    tile = tiles.get(posicao + 1);
+	    tile = this.getTile(posicao + 1);
 	    if (!tile.getPercepcoes().isEmpty()
 		    || tile.getOcupado() != Tile.VAZIO) {
 		return false;
 
 	    }
-	    tile = tiles.get(posicao - 1);
+	    tile = this.getTile(posicao - 1);
 	    if (!tile.getPercepcoes().isEmpty()
 		    || tile.getOcupado() != Tile.VAZIO) {
 		return false;
 
 	    }
-	    tile = tiles.get(posicao - maxX);
+	    tile = this.getTile(posicao - maxX);
 	    if (!tile.getPercepcoes().isEmpty()
 		    || tile.getOcupado() != Tile.VAZIO) {
 		return false;
 
 	    }
 	} else {
-	    tile = tiles.get(posicao - 1);
+	    tile = this.getTile(posicao - 1);
 	    if (!tile.getPercepcoes().isEmpty()
 		    || tile.getOcupado() != Tile.VAZIO) {
 		return false;
 
 	    }
-	    tile = tiles.get(posicao + 1);
+	    tile = this.getTile(posicao + 1);
 	    if (!tile.getPercepcoes().isEmpty()
 		    || tile.getOcupado() != Tile.VAZIO) {
 		return false;
 
 	    }
-	    tile = tiles.get(posicao + maxX);
+	    tile = this.getTile(posicao + maxX);
 	    if (!tile.getPercepcoes().isEmpty()
 		    || tile.getOcupado() != Tile.VAZIO) {
 		return false;
 
 	    }
-	    tile = tiles.get(posicao - maxX);
+	    tile = this.getTile(posicao - maxX);
 	    if (!tile.getPercepcoes().isEmpty()
 		    || tile.getOcupado() != Tile.VAZIO) {
 		return false;
@@ -373,51 +392,51 @@ public class TileMap {
 
     public void espalhaPercepcao(int posicao, int valor) {
 	if (posicao == 0) { // canto superior esquerdo
-	    tiles.get(posicao + 1).adicionaPercepcao(valor);
-	    tiles.get(posicao + maxX).adicionaPercepcao(valor);
+	    this.getTile(posicao + 1).adicionaPercepcao(valor);
+	    this.getTile(posicao + maxX).adicionaPercepcao(valor);
 
 	} else if (posicao == maxX - 1) { // canto superior direito
-	    tiles.get(posicao - 1).adicionaPercepcao(valor);
-	    tiles.get(posicao + maxX).adicionaPercepcao(valor);
+	    this.getTile(posicao - 1).adicionaPercepcao(valor);
+	    this.getTile(posicao + maxX).adicionaPercepcao(valor);
 
 	} else if (posicao == maxX * maxY - 1) { // canto inferior direito
-	    tiles.get(posicao - 1).adicionaPercepcao(valor);
-	    tiles.get(posicao - maxX).adicionaPercepcao(valor);
+	    this.getTile(posicao - 1).adicionaPercepcao(valor);
+	    this.getTile(posicao - maxX).adicionaPercepcao(valor);
 
 	} else if (posicao == maxX * (maxY - 1)) { // canto inferior esquerdo
-	    tiles.get(posicao + 1).adicionaPercepcao(valor);
-	    tiles.get(posicao - maxX).adicionaPercepcao(valor);
+	    this.getTile(posicao + 1).adicionaPercepcao(valor);
+	    this.getTile(posicao - maxX).adicionaPercepcao(valor);
 
 	} else if (posicao % maxX == 0) { // esquerdo
-	    tiles.get(posicao + 1).adicionaPercepcao(valor);
-	    tiles.get(posicao - maxX).adicionaPercepcao(valor);
-	    tiles.get(posicao + maxX).adicionaPercepcao(valor);
+	    this.getTile(posicao + 1).adicionaPercepcao(valor);
+	    this.getTile(posicao - maxX).adicionaPercepcao(valor);
+	    this.getTile(posicao + maxX).adicionaPercepcao(valor);
 
 	} else if (posicao < maxX) { // superior
-	    tiles.get(posicao + 1).adicionaPercepcao(valor);
-	    tiles.get(posicao - 1).adicionaPercepcao(valor);
-	    tiles.get(posicao + maxX).adicionaPercepcao(valor);
+	    this.getTile(posicao + 1).adicionaPercepcao(valor);
+	    this.getTile(posicao - 1).adicionaPercepcao(valor);
+	    this.getTile(posicao + maxX).adicionaPercepcao(valor);
 
 	} else if (posicao % maxX == maxY - 1) { // direito
-	    tiles.get(posicao - 1).adicionaPercepcao(valor);
-	    tiles.get(posicao - maxX).adicionaPercepcao(valor);
-	    tiles.get(posicao + maxX).adicionaPercepcao(valor);
+	    this.getTile(posicao - 1).adicionaPercepcao(valor);
+	    this.getTile(posicao - maxX).adicionaPercepcao(valor);
+	    this.getTile(posicao + maxX).adicionaPercepcao(valor);
 
 	} else if (posicao / maxX >= maxY - 1) { // inferior
-	    tiles.get(posicao + 1).adicionaPercepcao(valor);
-	    tiles.get(posicao - 1).adicionaPercepcao(valor);
-	    tiles.get(posicao - maxX).adicionaPercepcao(valor);
+	    this.getTile(posicao + 1).adicionaPercepcao(valor);
+	    this.getTile(posicao - 1).adicionaPercepcao(valor);
+	    this.getTile(posicao - maxX).adicionaPercepcao(valor);
 
 	} else {
-	    tiles.get(posicao - 1).adicionaPercepcao(valor);
-	    tiles.get(posicao + 1).adicionaPercepcao(valor);
-	    tiles.get(posicao + maxX).adicionaPercepcao(valor);
-	    tiles.get(posicao - maxX).adicionaPercepcao(valor);
+	    this.getTile(posicao - 1).adicionaPercepcao(valor);
+	    this.getTile(posicao + 1).adicionaPercepcao(valor);
+	    this.getTile(posicao + maxX).adicionaPercepcao(valor);
+	    this.getTile(posicao - maxX).adicionaPercepcao(valor);
 	}
     }
 
     public void removeThing(int valor, int posicao) {
-	Tile tile = this.tiles.get(posicao);
+	Tile tile = this.getTile(posicao);
 
 	switch (valor) {
 	case Tile.TREINADOR:
@@ -440,46 +459,46 @@ public class TileMap {
 
     public void removePercepcao(int posicao, int valor) {
 	if (posicao == 0) { // canto superior esquerdo
-	    tiles.get(posicao + 1).removePercepcao(valor);
-	    tiles.get(posicao + maxX).removePercepcao(valor);
+	    this.getTile(posicao + 1).removePercepcao(valor);
+	    this.getTile(posicao + maxX).removePercepcao(valor);
 
 	} else if (posicao == maxX - 1) { // canto superior direito
-	    tiles.get(posicao - 1).removePercepcao(valor);
-	    tiles.get(posicao + maxX).removePercepcao(valor);
+	    this.getTile(posicao - 1).removePercepcao(valor);
+	    this.getTile(posicao + maxX).removePercepcao(valor);
 
 	} else if (posicao == maxX * maxY - 1) { // canto inferior direito
-	    tiles.get(posicao - 1).removePercepcao(valor);
-	    tiles.get(posicao - maxX).removePercepcao(valor);
+	    this.getTile(posicao - 1).removePercepcao(valor);
+	    this.getTile(posicao - maxX).removePercepcao(valor);
 
 	} else if (posicao == maxX * (maxY - 1)) { // canto inferior esquerdo
-	    tiles.get(posicao + 1).removePercepcao(valor);
-	    tiles.get(posicao - maxX).removePercepcao(valor);
+	    this.getTile(posicao + 1).removePercepcao(valor);
+	    this.getTile(posicao - maxX).removePercepcao(valor);
 
 	} else if (posicao % maxX == 0) { // esquerdo
-	    tiles.get(posicao + 1).removePercepcao(valor);
-	    tiles.get(posicao - maxX).removePercepcao(valor);
-	    tiles.get(posicao + maxX).removePercepcao(valor);
+	    this.getTile(posicao + 1).removePercepcao(valor);
+	    this.getTile(posicao - maxX).removePercepcao(valor);
+	    this.getTile(posicao + maxX).removePercepcao(valor);
 
 	} else if (posicao < maxX) { // superior
-	    tiles.get(posicao + 1).removePercepcao(valor);
-	    tiles.get(posicao - 1).removePercepcao(valor);
-	    tiles.get(posicao + maxX).removePercepcao(valor);
+	    this.getTile(posicao + 1).removePercepcao(valor);
+	    this.getTile(posicao - 1).removePercepcao(valor);
+	    this.getTile(posicao + maxX).removePercepcao(valor);
 
 	} else if (posicao % maxX == maxY - 1) { // direito
-	    tiles.get(posicao - 1).removePercepcao(valor);
-	    tiles.get(posicao - maxX).removePercepcao(valor);
-	    tiles.get(posicao + maxX).removePercepcao(valor);
+	    this.getTile(posicao - 1).removePercepcao(valor);
+	    this.getTile(posicao - maxX).removePercepcao(valor);
+	    this.getTile(posicao + maxX).removePercepcao(valor);
 
 	} else if (posicao / maxX >= maxY - 1) { // inferior
-	    tiles.get(posicao + 1).removePercepcao(valor);
-	    tiles.get(posicao - 1).removePercepcao(valor);
-	    tiles.get(posicao - maxX).removePercepcao(valor);
+	    this.getTile(posicao + 1).removePercepcao(valor);
+	    this.getTile(posicao - 1).removePercepcao(valor);
+	    this.getTile(posicao - maxX).removePercepcao(valor);
 
 	} else {
-	    tiles.get(posicao - 1).removePercepcao(valor);
-	    tiles.get(posicao + 1).removePercepcao(valor);
-	    tiles.get(posicao + maxX).removePercepcao(valor);
-	    tiles.get(posicao - maxX).removePercepcao(valor);
+	    this.getTile(posicao - 1).removePercepcao(valor);
+	    this.getTile(posicao + 1).removePercepcao(valor);
+	    this.getTile(posicao + maxX).removePercepcao(valor);
+	    this.getTile(posicao - maxX).removePercepcao(valor);
 	}
     }
 
@@ -490,7 +509,7 @@ public class TileMap {
 
 	while (pokemons > 0) {
 	    int index = gerador.nextInt(maxX * maxY);
-	    tile = tiles.get(index);
+	    tile = this.getTile(index);
 	    if (tile.getOcupado() == Tile.VAZIO && verificaEstado(index)) {
 		tile.setOcupado(pokemons);
 		pokemons--;
@@ -593,9 +612,10 @@ public class TileMap {
     public String toString() {
 	String string = "";
 
-	for (int i = 0; i < this.maxX; i++) {
-	    for (int j = 0; j < this.maxY; j++) {
-		Tile tile = tiles.get(i * maxX + j);
+	for (int y = 0; y < this.maxX; y++) {
+	    for (int x = 0; x < this.maxY; x++) {
+		// Tile tile = tiles.get(y * maxX + x);
+		Tile tile = getTile(x, y);
 		string += tile.getTerreno() + "|" + tile.getOcupado() + " ";
 	    }
 	    string += "\n";
@@ -636,7 +656,7 @@ public class TileMap {
 	for (int row = 0; row < maxY; row++) {
 	    for (int col = 0; col < maxX; col++) {
 
-		Tile tileDraw = tiles.get(row * maxX + col);
+		Tile tileDraw = getTile(col, row);
 
 		switch (tileDraw.getTerreno()) {
 		case Tile.GRAMA:

@@ -3,6 +3,7 @@ package aplicacao;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -466,12 +467,24 @@ public class Personagem {
 		this.size, this.size, null);
     }
 
-    public void update() {
-	// TODO Auto-generated method stub
-	if (nextTile()) {
+    public void update(TileMap tileMap) {
+	Tile tile = tileMap.getTile(getProximaPosicao());
+
+	if (nextTile() && tile.getTerreno() == Tile.GRAMA) {
 	    andar();
 	} else {
-	    virarEsquerda();
+	    Random gerador = new Random();
+
+	    switch (gerador.nextInt(2)) {
+	    case 0:
+		virarEsquerda();
+		break;
+	    case 1:
+		virarDireita();
+		;
+		break;
+	    }
+	    // virarEsquerda();
 	}
 	animation.setFrames(walkingSprites);
 	animation.setDelay(-1);

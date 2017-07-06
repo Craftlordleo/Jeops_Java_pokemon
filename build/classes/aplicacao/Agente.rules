@@ -20,13 +20,14 @@ public ruleBase Agente {
             personagem.andar();
             modified(personagem);
     }
+    
     rule AndarGrama{
         declarations
             TileMap tileMap;
             Personagem personagem;
         localdecl
-           Integer posX = personagem.getPosX();
-           Integer posY = personagem.getPosY();
+            Integer posX = personagem.getPosX();
+            Integer posY = personagem.getPosY();
             Tile tile = tileMap.getTileAt(posX, posY);
         conditions
             personagem.nextTile();
@@ -43,8 +44,8 @@ public ruleBase Agente {
             TileMap tileMap;
             Personagem personagem;
         localdecl
-           Integer posX = personagem.getPosX();
-           Integer posY = personagem.getPosY();
+            Integer posX = personagem.getPosX();
+            Integer posY = personagem.getPosY();
             Tile tile = tileMap.getTileAt(posX, posY);
         conditions
             personagem.nextTile();
@@ -61,8 +62,8 @@ public ruleBase Agente {
             TileMap tileMap;
             Personagem personagem;
         localdecl
-           Integer posX = personagem.getPosX();
-           Integer posY = personagem.getPosY();
+            Integer posX = personagem.getPosX();
+            Integer posY = personagem.getPosY();
             Tile tile = tileMap.getTileAt(posX, posY);
         conditions
             personagem.nextTile();
@@ -79,8 +80,8 @@ public ruleBase Agente {
             TileMap tileMap;
             Personagem personagem;
         localdecl
-           Integer posX = personagem.getPosX();
-           Integer posY = personagem.getPosY();
+            Integer posX = personagem.getPosX();
+            Integer posY = personagem.getPosY();
             Tile tile = tileMap.getTileAt(posX, posY);
         conditions
             personagem.nextTile();
@@ -97,8 +98,8 @@ public ruleBase Agente {
             TileMap tileMap;
             Personagem personagem;
         localdecl
-           Integer posX = personagem.getPosX();
-           Integer posY = personagem.getPosY();
+            Integer posX = personagem.getPosX();
+            Integer posY = personagem.getPosY();
             Tile tile = tileMap.getTileAt(posX, posY);
         conditions
             personagem.nextTile();
@@ -115,8 +116,8 @@ public ruleBase Agente {
             TileMap tileMap;
             Personagem personagem;
         localdecl
-           Integer posX = personagem.getPosX();
-           Integer posY = personagem.getPosY();
+            Integer posX = personagem.getPosX();
+            Integer posY = personagem.getPosY();
             Tile tile = tileMap.getTileAt(posX, posY);
         conditions
             personagem.getPokebolasTotal() < 151;
@@ -134,10 +135,10 @@ public ruleBase Agente {
             TileMap tileMap;
             Personagem personagem;
         localdecl
-           Integer posX = personagem.getPosX();
-           Integer posY = personagem.getPosY();
+            Integer posX = personagem.getPosX();
+            Integer posY = personagem.getPosY();
             Tile tile = tileMap.getTileAt(posX, posY);
-           Integer ocupado = tile.getOcupado();
+            Integer ocupado = tile.getOcupado();
         conditions
             personagem.getPokebolas() > 0;
             ocupado > 0;// eh o id de pokemon
@@ -154,8 +155,8 @@ public ruleBase Agente {
             TileMap tileMap;
             Personagem personagem;
         localdecl
-           Integer posX = personagem.getPosX();
-           Integer posY = personagem.getPosY();
+            Integer posX = personagem.getPosX();
+            Integer posY = personagem.getPosY();
             Tile tile = tileMap.getTileAt(posX, posY);
         conditions
             personagem.getPokemons() > 0;
@@ -172,8 +173,8 @@ public ruleBase Agente {
             TileMap tileMap;
             Personagem personagem;
         localdecl
-           Integer posX = personagem.getPosX();
-           Integer posY = personagem.getPosY();
+            Integer posX = personagem.getPosX();
+            Integer posY = personagem.getPosY();
             Tile tile = tileMap.getTileAt(posX, posY);
         conditions
             personagem.getEstadoPokemons()==Personagem.CURADOS;
@@ -191,8 +192,8 @@ public ruleBase Agente {
             TileMap tileMap;
             Personagem personagem;
         localdecl
-           Integer posX = personagem.getPosX();
-           Integer posY = personagem.getPosY();
+            Integer posX = personagem.getPosX();
+            Integer posY = personagem.getPosY();
             Tile tile = tileMap.getTileAt(posX, posY);
         conditions
             personagem.getEstadoPokemons() == Personagem.FERIDOS;
@@ -200,6 +201,7 @@ public ruleBase Agente {
         actions
             System.out.println("Perdeu a batalha");
             personagem.perderBatalha();
+            // precisa andar
             modified(personagem);
     }
 }
