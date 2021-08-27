@@ -1,2 +1,3 @@
-build/
+/build/
 build/classes/aplicacao/ILog.class
+loggin.xml
