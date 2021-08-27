@@ -13,7 +13,7 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="lib" path="C:/Users/Carlos/Documents/Leo/2016.1/IA/Jeops/JEOPS.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Carlos/Documents/Leo/2016.1/IA/Jeops/JeopsRE.jar"/>
+	<classpathentry kind="lib" path="WebContent/lib/JEOPS.jar"/> 
+	<classpathentry kind="lib" path="WebContent/lib/JeopsRE.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
