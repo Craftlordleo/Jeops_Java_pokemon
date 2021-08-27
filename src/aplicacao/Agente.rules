@@ -34,7 +34,7 @@ public ruleBase Agente {
             tileMap.getTerrenoAt(personagem.getProximaPosicao()) == Tile.GRAMA;
             tile.getOcupado() == Tile.VAZIO;
         actions
-            System.out.println("Andou só de teste na grama");
+            System.out.println("Andou sÃ³ de teste na grama");
             personagem.andar();
             modified(personagem);
     }
@@ -51,6 +51,7 @@ public ruleBase Agente {
             personagem.nextTile();
             personagem.isAgua();
             tileMap.getTerrenoAt(personagem.getProximaPosicao()) == Tile.AGUA;
+            tile.getOcupado() == Tile.VAZIO;
         actions
             System.out.println("Andou na agua");
             personagem.andar();
@@ -69,6 +70,7 @@ public ruleBase Agente {
             personagem.nextTile();
             personagem.isMontanha();
             tileMap.getTerrenoAt(personagem.getProximaPosicao()) == Tile.MONTANHA;
+            tile.getOcupado() == Tile.VAZIO;
         actions
             System.out.println("Andou na montanha");
             personagem.andar();
@@ -87,6 +89,7 @@ public ruleBase Agente {
             personagem.nextTile();
             personagem.isLava();
             tileMap.getTerrenoAt(personagem.getProximaPosicao()) == Tile.LAVA;
+            tile.getOcupado() == Tile.VAZIO;
         actions
             System.out.println("Andou na lava");
             personagem.andar();
@@ -105,6 +108,7 @@ public ruleBase Agente {
             personagem.nextTile();
             personagem.isCaverna();
             tileMap.getTerrenoAt(personagem.getProximaPosicao()) == Tile.CAVERNA;
+            tile.getOcupado() == Tile.VAZIO;
         actions
             System.out.println("Andou na caverna");
             personagem.andar();
@@ -138,12 +142,12 @@ public ruleBase Agente {
             Integer posX = personagem.getPosX();
             Integer posY = personagem.getPosY();
             Tile tile = tileMap.getTileAt(posX, posY);
-            Integer ocupado = tile.getOcupado();
+            //Integer ocupado = tile.getOcupado();
         conditions
             personagem.getPokebolas() > 0;
-            ocupado > 0;// eh o id de pokemon
+            tile.getOcupado() > 0;// eh o id de pokemon
         actions
-            System.out.println("Pegou pokemons");
+            System.out.println("Pegou pokemon %d" % tile.getOcupado());
             personagem.pegarPokemon(tileMap.getPokemon(ocupado));
             tileMap.removeThing(ocupado, posX, posY);
             modified(personagem);
