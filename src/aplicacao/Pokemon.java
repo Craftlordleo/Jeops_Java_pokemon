@@ -208,8 +208,4 @@ public class Pokemon {
 		string += "\nImagem: " + this.getImage();
 		return string;
 	}
-
-	public static void main(String[] args) {
-		System.out.println("teste pokemons");
-	}
 }

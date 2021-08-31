@@ -24,8 +24,8 @@ public class ILog {
 			Handler console = new ConsoleHandler();
 			Handler file = new FileHandler("loggin.xml");
 			/*
-			 * Define que na consola apenas aparece log com nÌvel superior ou a
-			 * warning e no ficheiro deve aparecer o log de qualquer nÌvel
+			 * Define que na consola apenas aparece log com n√≠vel superior ou a warning e no
+			 * ficheiro deve aparecer o log de qualquer n√≠vel
 			 */
 			console.setLevel(Level.WARNING);
 			file.setLevel(Level.ALL);
@@ -37,15 +37,15 @@ public class ILog {
 			// Ignora os Handlers definidos no Logger Global
 			LOG.setUseParentHandlers(false);
 		} catch (IOException io) {
-			LOG.warning("O ficheiro hellologgin.xml n„o pode ser criado");
+			LOG.warning("O ficheiro hellologgin.xml n√£o pode ser criado");
 		}
 
 		return instancia;
 	}
-	
+
 	public void setLog(String acao, String resultado) {
-        LOG.info("AÁ„o: "+ acao +"  Resultado: "+ resultado);
-		
+		LOG.info("A√ß√£o: " + acao + "  Resultado: " + resultado);
+
 	}
 
 }
